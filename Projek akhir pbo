@@ -1,0 +1,37 @@
+import pygame
+import random
+import sys
+
+# Inisialisasi pygame
+pygame.init()
+
+# Konstanta layar
+WIDTH, HEIGHT = 400, 600
+SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Dodge Car with Animals")
+
+# Warna
+WHITE = (255, 255, 255)
+GRAY = (50, 50, 50)
+YELLOW = (255, 255, 0)
+BLACK = (0, 0, 0)
+RED = (200, 0, 0)
+
+# Kecepatan game
+FPS = 60
+clock = pygame.time.Clock()
+
+# Memuat gambar hewan
+PLAYER_IMAGE = pygame.image.load("player.png")
+ENEMY_IMAGES = [
+    pygame.image.load("lion.png"),
+    pygame.image.load("elephant.png"),
+    pygame.image.load("tiger.png"),
+]
+
+# Ubah ukuran gambar
+PLAYER_IMAGE = pygame.transform.scale(PLAYER_IMAGE, (40, 60))
+ENEMY_IMAGES = [pygame.transform.scale(img, (40, 60)) for img in ENEMY_IMAGES]
+
+# Batas maksimum jumlah musuh
+MAX_ENEMIES = 5
