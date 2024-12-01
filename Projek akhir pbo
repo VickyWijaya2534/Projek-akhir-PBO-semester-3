@@ -88,3 +88,58 @@ def game_over_screen(score):
     game_over_text = font.render("GAME OVER", True, RED)
     score_text = font.render(f"Score: {score}", True, WHITE)
     restart_text = font.render("Press R to Restart or Q to Quit", True, WHITE)
+
+def game_over_screen(score):
+    font = pygame.font.SysFont(None, 48)
+    game_over_text = font.render("GAME OVER", True, RED)
+    score_text = font.render(f"Score: {score}", True, WHITE)
+
+    SCREEN.fill(BLACK)
+    SCREEN.blit(game_over_text, (WIDTH // 2 - game_over_text.get_width() // 2, HEIGHT // 2 - 30))
+    SCREEN.blit(score_text, (WIDTH // 2 - score_text.get_width() // 2, HEIGHT // 2 + 30))
+    pygame.display.flip()
+    pygame.time.wait(3000)  # Tampilkan selama 3 detik
+
+
+def main():
+    player = PlayerCar(WIDTH // 2 - 20, HEIGHT - 100, PLAYER_IMAGE, 5)
+    enemies = []
+    score = 0
+    font = pygame.font.SysFont(None, 36)
+
+    running = True
+    while running:
+        SCREEN.fill(YELLOW)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        keys = pygame.key.get_pressed()
+        player.move(keys)
+        draw_road()
+        player.draw(SCREEN)
+
+        if random.randint(1, 20) == 1:
+            spawn_enemy(enemies)
+
+        for enemy in enemies[:]:
+            enemy.move()
+            enemy.draw(SCREEN)
+
+            if enemy.is_out_of_bounds():
+                enemies.remove(enemy)
+                score += 1
+
+            if player.get_rect().colliderect(enemy.get_rect()):
+                game_over_screen(score)
+                return  # Keluar dari game
+
+        score_text = font.render(f"Score: {score}", True, WHITE)
+        SCREEN.blit(score_text, (10, 10))
+        pygame.display.flip()
+        clock.tick(FPS)
+
+
+if __name__ == "__main__":
+    main()
